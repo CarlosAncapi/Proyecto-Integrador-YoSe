@@ -7,15 +7,14 @@ import cl.yose.web.models.Usuario;
 import cl.yose.web.repositories.UsuarioRepository;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioServices {
-	
+public class UsuarioServiceImpl implements UsuarioService {
+
 	@Autowired
-	public UsuarioRepository usuarioRepository;
-	
+	private UsuarioRepository usuarioRepository;
+
 	@Override
 	public Usuario guardarUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
 		return usuarioRepository.save(usuario);
 	}
-
+	
 }

@@ -1,9 +1,7 @@
 package cl.yose.web.models;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,12 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,47 +30,48 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "comentarios")
-public class Comentario {
+@Table(name="valoracionComentarios")
+
+public class ValoracionComentario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotNull
-	@Size(min= 0, max = 240, message = "Excedes el limite de carácteres")
-	private String texto;
+	
+	private Boolean meGusta;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "comentario",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	private List<ValoracionComentario> valoracionesComentarios;
+
+//------------------------------------------------------------------------	
+	//conexion entre clase de valoracion-comentario y comentario 
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="posteo_id")
-	private Posteo posteo;
+	@JoinColumn(name="comentario_id")
+	private Comentario comentario;
 	
-	@Column(updatable = false) // una vez insertado el dato, no se puede modificar
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	
+	
+	
+//--------------------------------------------------------------------------	
+	@Column(updatable=false)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createdAt;
-
-	// para modificar un registro
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date updatedAt;
 	
-	// Atributos de control
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date updatedAt;	
+
+	// atributos de control
 	@PrePersist
-	protected void onCreate() {
+	protected void onCreate(){
 		this.createdAt = new Date();
-	}
-
-	// antes de actualizar un dato, le agrega la fecha.
+		}
 	@PreUpdate
-	protected void onUpdate() {
+	protected void onUpdate(){
 		this.updatedAt = new Date();
-	}
-
+		}
+	
 }

@@ -1,7 +1,7 @@
 package cl.yose.web.models;
 
-import lombok.*;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -22,12 +23,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name="posteos")
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
+@Entity
+@Table(name="posteos")
 public class Posteo {
 	
 	@Id
@@ -44,26 +52,34 @@ public class Posteo {
     
     private String url;
     
+    @JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="usuario_id")
+	private Usuario usuario;
+    
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+    
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "typePosteo_id")
+    private TypePosteo typePosteo;
+    
+
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "posteo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Comentario> comentarios;
+    
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    
-//---------------------------------------------------
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "posteo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="comentario_id")
-    private Comentario comentario;
 
-    
-    
-    
-    
-    
-    
 	//atributos de control
     @PrePersist
     protected void onCreate() {
@@ -74,6 +90,5 @@ public class Posteo {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
-
 
 }
