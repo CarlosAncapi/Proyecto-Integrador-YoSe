@@ -69,7 +69,7 @@ public class Posteo {
     
 
     
-    @JsonIgnore
+  
     @OneToMany(mappedBy = "posteo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comentario> comentarios;
     

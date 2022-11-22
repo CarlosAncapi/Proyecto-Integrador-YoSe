@@ -30,48 +30,48 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name="valoracionComentarios")
+@Table(name = "valoracionComentarios")
 
 public class ValoracionComentario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private Boolean meGusta;
-	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="usuario_id")
-	private Usuario usuario;
-	
 
 //------------------------------------------------------------------------	
-	//conexion entre clase de valoracion-comentario y comentario 
-	
+	// conexion entre clase de valoracion-comentario y usuario
+
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="comentario_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
+
+//------------------------------------------------------------------------	
+	// conexion entre clase de valoracion-comentario y comentario
+
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "comentario_id")
 	private Comentario comentario;
-	
-	
-	
-	
+
 //--------------------------------------------------------------------------	
-	@Column(updatable=false)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@Column(updatable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createdAt;
-	
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date updatedAt;	
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date updatedAt;
 
 	// atributos de control
 	@PrePersist
-	protected void onCreate(){
+	protected void onCreate() {
 		this.createdAt = new Date();
-		}
+	}
+
 	@PreUpdate
-	protected void onUpdate(){
+	protected void onUpdate() {
 		this.updatedAt = new Date();
-		}
-	
+	}
+
 }

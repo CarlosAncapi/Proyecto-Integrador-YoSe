@@ -58,10 +58,12 @@ public class Usuario {
 	private List<Comentario> comentarios;
 	*/
 	
-	
+//----------------------------------------------------------------
+	// conexion entre usuario y varolacion-comentario
 	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<ValoracionComentario> valoracionesAComentarios;
-	
+
+//--------------------------------------------------------------------------------
 	
 	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Recover recover;
