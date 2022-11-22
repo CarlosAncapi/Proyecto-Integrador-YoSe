@@ -1,12 +1,17 @@
 package cl.yose.web.models;
 
+import lombok.*;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -15,8 +20,14 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="posteos")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Posteo {
 	
 	@Id
@@ -40,86 +51,19 @@ public class Posteo {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
     
-    public Posteo() {
-		super();
-	}
+//---------------------------------------------------
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "posteo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="comentario_id")
+    private Comentario comentario;
 
-
-	public Posteo(Long id, @NotNull @Size(min = 5, max = 40, message = "Error en el ingreso del titulo") String titulo,
-			@NotNull @Size(min = 5, max = 40, message = "Error en el ingreso del contenido del posteo") String texto,
-			String url, Date createdAt, Date updatedAt) {
-		super();
-		this.id = id;
-		this.titulo = titulo;
-		this.texto = texto;
-		this.url = url;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-	}
-
-
-
-
-	public Long getId() {
-		return id;
-	}
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-	public String getTitulo() {
-		return titulo;
-	}
-
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-
-	public String getTexto() {
-		return texto;
-	}
-
-
-	public void setTexto(String texto) {
-		this.texto = texto;
-	}
-
-
-	public String getUrl() {
-		return url;
-	}
-
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-
+    
+    
+    
+    
+    
+    
 	//atributos de control
     @PrePersist
     protected void onCreate() {

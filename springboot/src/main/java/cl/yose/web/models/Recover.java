@@ -1,6 +1,8 @@
 package cl.yose.web.models;
 
+import lombok.*;
 import java.util.Date;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +18,16 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
+
+
+
 @Entity
 @Table(name = "recovers")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Recover {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
@@ -35,59 +45,6 @@ public class Recover {
 	private Date updatedAt;	
 	
 	
-	public Recover() {
-		super();
-	}
-	
-
-	public Recover(Long id, @NotNull @Size(min = 8, max = 30, message = "Error en el largo contraseña") String code,
-			Date createdAt, Date updatedAt) {
-		super();
-		this.id = id;
-		this.code = code;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-	}
-
-
-	public Long getId() {
-		return id;
-	}
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-	public String getCode() {
-		return code;
-	}
-
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
 
 
 	// atributos de control
